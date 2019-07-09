@@ -5,7 +5,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 const logger = require('./logger');
 const { NODE_ENV } = require('./config');
-const bookmarks = require('./store');
 const bookmarksRouter = require('./bookmarkRouter/bookmarks-router');
 
 const app = express();
