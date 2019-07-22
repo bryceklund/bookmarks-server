@@ -5,3 +5,8 @@
 {"message":"Bookmark with id 7454e009-e051-4cb6-8b37-6751072bd3f1 not found","level":"error"}
 {"message":"Bookmark with id cjxvzbef800020419b3cd5fai deleted.","level":"info"}
 {"message":"Bookmark with id cjxvzbef800020419b3cd5fai not found","level":"error"}
+{"message":"Unauthorized request to path /.","level":"error"}
+{"message":"Unauthorized request to path /favicon.ico.","level":"error"}
+{"message":"Unauthorized request to path /articles.","level":"error"}
+{"message":"Unauthorized request to path /.","level":"error"}
+{"message":"Unauthorized request to path /bookmarks.","level":"error"}
