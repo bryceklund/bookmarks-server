@@ -10,3 +10,7 @@
 {"message":"Unauthorized request to path /articles.","level":"error"}
 {"message":"Unauthorized request to path /.","level":"error"}
 {"message":"Unauthorized request to path /bookmarks.","level":"error"}
+{"message":"Title is required.","level":"error"}
+{"message":"Bookmark with id 79e21319-d8c1-46b6-977c-652eb01897fb created","level":"info"}
+{"message":"Bookmark with id a06f9508-4907-44af-9db2-35830fd5e224 created","level":"info"}
+{"message":"Bookmark with id 95441dce-a59c-4009-bed9-7857ac70bece created","level":"info"}

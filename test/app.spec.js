@@ -34,6 +34,27 @@ describe.only('Bookmarks endpoints', () => {
                         .set({"Authorization": "Bearer bb10ef2f-fc68-4b42-8960-e3e3d344ae9a"})
                         .expect(200, testBookmark)
         })
+        it(`POST /bookmarks returns 201 and the submitted bookmark`, () => {
+            const newBookmark = {
+                title: 'test', 
+                url: 'test.com', 
+                description: 'super fun stuff', 
+                rating: 4
+            };
+            return supertest(app)
+                    .post('/bookmarks')
+                    .send(newBookmark)
+                    .set({"Authorization": "Bearer bb10ef2f-fc68-4b42-8960-e3e3d344ae9a"})
+                    .expect(201)
+                    .expect(res => {
+                        expect(res.body.title).to.eql(newBookmark.title)
+                        expect(res.body.url).to.eql(newBookmark.url)
+                        expect(res.body.description).to.eql(newBookmark.description)
+                        expect(res.body.rating).to.eql(newBookmark.rating)
+                        expect(res.body).to.have.property('id')
+                        //expect(res.headers.location).to.eql(`http://localhost:8000/bookmarks/${res.body.id}`)
+                    })
+        })
     })
 
     context('given no bookmarks', () => {
@@ -43,4 +64,6 @@ describe.only('Bookmarks endpoints', () => {
                                     .expect(200, '[]');
         })
     })
+
+
 });
