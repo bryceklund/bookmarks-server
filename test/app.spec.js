@@ -55,6 +55,68 @@ describe.only('Bookmarks endpoints', () => {
                         //expect(res.headers.location).to.eql(`http://localhost:8000/bookmarks/${res.body.id}`)
                     })
         })
+        describe(`PATCH /bookmarks/:bookmarkId`, () => {
+            it(`given no articles, responds with 404`, () => {
+                const bookmarkId = 12345;
+                return supertest(app)
+                        .patch(`/bookmarks/${bookmarkId}`)
+                        .set({"Authorization": "Bearer bb10ef2f-fc68-4b42-8960-e3e3d344ae9a"})
+                        .expect(404, { error: { message: 'Article not found' } })
+            })
+            it(`responds with 204 and updates the bookmark`, () => {
+                const idToUpdate = 2;
+                const updatedBookmark = {
+                    title: 'new title',
+                    url: 'new.url'
+                }
+                const expectedBookmark = {
+                    ...testData[idToUpdate - 1],
+                    ...updatedBookmark
+                }
+                return supertest(app)
+                        .patch(`/bookmarks/${idToUpdate}`)
+                        .set({"Authorization": "Bearer bb10ef2f-fc68-4b42-8960-e3e3d344ae9a"})
+                        .send(updatedBookmark)
+                        .expect(204)
+                        .then(res => {
+                            return supertest(app)
+                                    .get(`/bookmarks/${idToUpdate}`)
+                                    .set({"Authorization": "Bearer bb10ef2f-fc68-4b42-8960-e3e3d344ae9a"})
+                                    .expect(expectedBookmark)
+                        })
+            })
+            it(`responds with 400 when no required fields are supplied`, () => {
+                const idToUpdate = 2;
+                return supertest(app)
+                        .patch(`/bookmarks/${idToUpdate}`)
+                        .set({"Authorization": "Bearer bb10ef2f-fc68-4b42-8960-e3e3d344ae9a"})
+                        .send({ dummyField: 'blah' })
+                        .expect(400, { error: { message: 'Body must contain title, url, description, or rating' } })
+            })
+            it(`responds with 204 when updating only a subset of fields`, () => {
+                const idToUpdate = 2;
+                const updatedBookmark = { title: 'beep booop' };
+                const expectedBookmark = {
+                    ...testData[idToUpdate - 1],
+                    ...updatedBookmark
+                }
+                return supertest(app)
+                        .patch(`/bookmarks/${idToUpdate}`)
+                        .set({"Authorization": "Bearer bb10ef2f-fc68-4b42-8960-e3e3d344ae9a"})
+                        .send({
+                            ...updatedArticle,
+                            fieldToIgnore: 'this should be ignored'
+                        })
+                        .expect(204)
+                        .then(res => {
+                            return supertest(app)
+                                    .get(`/bookmarks/${idToUpdate}`)
+                                    .set({"Authorization": "Bearer bb10ef2f-fc68-4b42-8960-e3e3d344ae9a"})
+                                    .expect(expectedBookmark)
+            
+                        })
+            })
+        }) 
     })
 
     context('given no bookmarks', () => {

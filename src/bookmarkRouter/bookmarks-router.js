@@ -89,5 +89,28 @@ bookmarksRouter.route('/bookmarks/:id')
         logger.info(`Bookmark with id ${id} deleted.`)
         res.send(204).end();
     })
+    .patch((req, res, next) => {
+        const knexInstance = req.app.get('db');
+        const { title, url, description, rating } = req.body;
+        const newBookmark = { title, content, style };
+        const numberOfValues = Object.values(newBookmark).filter(Boolean).length;
+        if (numberOfValues === 0) {
+            return res.status(400).json({
+                error: {
+                    message: 'Request body must contain title, url, description, or rating'
+                }
+            })
+        }
+        BookmarksService.updateBookmark(knexInstance, req.body.id, newBookmark)
+            .then(bookmark => {
+                res.status(204).json({
+                    id: bookmark.id,
+                    title: bookmark.title,
+                    url: bookmark.url,
+                    description: bookmark.description,
+                    rating: bookmark.rating
+                })
+            })
+    })
 
 module.exports = bookmarksRouter;
